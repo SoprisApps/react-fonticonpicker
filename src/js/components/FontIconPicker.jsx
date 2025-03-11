@@ -170,6 +170,7 @@ class FontIconPicker extends React.PureComponent {
 		// some references we need for outside click
 		this.fipButtonRef = React.createRef();
 		this.fipDropDownRef = React.createRef();
+		this.fipDropDownPortalRef = React.createRef();
 
 		// create the state
 		this.state = {
@@ -236,8 +237,8 @@ class FontIconPicker extends React.PureComponent {
 		}
 		return (
 			this.fipButtonRef.current.contains(target) ||
-			(this.fipDropDownRef.current &&
-				this.fipDropDownRef.current.contains(target))
+			(this.fipDropDownPortalRef.current &&
+				this.fipDropDownPortalRef.current.contains(target))
 		);
 	};
 
@@ -374,8 +375,8 @@ class FontIconPicker extends React.PureComponent {
 		});
 	};
 
-	handlePortalEnter = /* istanbul ignore next */ node => {
-		const selectorNode = node.childNodes[0];
+	handlePortalEnter = /* istanbul ignore next */ () => {
+		const selectorNode = this.fipDropDownRef.current;
 		this.resetPortalStyle(selectorNode);
 		const computedStyle = getComputedStyle(selectorNode);
 		this.fipPortalComputedStyle = {
@@ -387,15 +388,15 @@ class FontIconPicker extends React.PureComponent {
 			selectorNode.style[key] = '0px';
 		});
 	};
-	handlePortalEntering = /* istanbul ignore next */ node => {
-		const selectorNode = node.childNodes[0];
+	handlePortalEntering = /* istanbul ignore next */ () => {
+		const selectorNode = this.fipDropDownRef.current;
 		selectorNode.style.maxHeight = this.fipPortalComputedStyle.height;
 		selectorNode.style.paddingTop = this.fipPortalComputedStyle.paddingTop;
 		selectorNode.style.paddingBottom = this.fipPortalComputedStyle.paddingBottom;
 	};
-	handlePortalEntered = /* istanbul ignore next */ node => {
+	handlePortalEntered = /* istanbul ignore next */ () => {
 		// reset style
-		const selectorNode = node.childNodes[0];
+		const selectorNode = this.fipDropDownRef.current;
 		this.resetPortalStyle(selectorNode);
 		// focus on search
 		// but only if not on mobile devices and search is shown
@@ -407,14 +408,14 @@ class FontIconPicker extends React.PureComponent {
 			selectorNode.querySelector('.rfipsearch__input').focus();
 		}
 	};
-	handlePortalExit = /* istanbul ignore next */ node => {
-		const selectorNode = node.childNodes[0];
+	handlePortalExit = /* istanbul ignore next */ () => {
+		const selectorNode = this.fipDropDownRef.current;
 		this.resetPortalStyle(selectorNode);
 		const { height } = getComputedStyle(selectorNode);
 		selectorNode.style.maxHeight = height;
 	};
-	handlePortalExiting = /* istanbul ignore next */ node => {
-		const selectorNode = node.childNodes[0];
+	handlePortalExiting = /* istanbul ignore next */ () => {
+		const selectorNode = this.fipDropDownRef.current;
 		selectorNode.style.maxHeight = '0px';
 		selectorNode.style.paddingTop = '0px';
 		selectorNode.style.paddingBottom = '0px';
@@ -457,6 +458,7 @@ class FontIconPicker extends React.PureComponent {
 			handleChangeCategory: this.handleChangeCategory,
 			handleChangePage: this.handleChangePage,
 			handleChangeSearch: this.handleChangeSearch,
+			domRef: this.fipDropDownRef,
 		};
 		return (
 			<div className={this.state.elemClass} ref={this.fipRef}>
@@ -481,11 +483,11 @@ class FontIconPicker extends React.PureComponent {
 					onEntered={this.handlePortalEntered}
 					onExit={this.handlePortalExit}
 					onExiting={this.handlePortalExiting}
-					nodeRef={this.fipDropDownRef}
+					nodeRef={this.fipDropDownPortalRef}
 				>
 					<FipDropDownPortal
 						appendRoot={this.props.appendTo}
-						domRef={this.fipDropDownRef}
+						domRef={this.fipDropDownPortalRef}
 						btnRef={this.fipButtonRef}
 						className={this.state.ddClass}
 					>

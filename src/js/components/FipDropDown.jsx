@@ -48,6 +48,7 @@ class FipDropDown extends React.PureComponent {
 		handleChangeCategory: PropTypes.func.isRequired,
 		handleChangePage: PropTypes.func.isRequired,
 		handleChangeSearch: PropTypes.func.isRequired,
+		domRef: PropTypes.object.isRequired, // eslint-disable-line
 	};
 
 	static defaultProps = {
@@ -96,7 +97,7 @@ class FipDropDown extends React.PureComponent {
 
 	render() {
 		return (
-			<div className="rfipdropdown__selector">
+			<div className="rfipdropdown__selector" ref={this.props.domRef}>
 				{this.props.showSearch ? (
 					<FipSearch
 						handleSearch={this.handleSearch}
