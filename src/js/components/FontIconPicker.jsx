@@ -481,6 +481,7 @@ class FontIconPicker extends React.PureComponent {
 					onEntered={this.handlePortalEntered}
 					onExit={this.handlePortalExit}
 					onExiting={this.handlePortalExiting}
+					nodeRef={this.fipDropDownRef}
 				>
 					<FipDropDownPortal
 						appendRoot={this.props.appendTo}
